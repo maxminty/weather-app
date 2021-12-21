@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from 'store';
 
 import Routes from 'screens/routes';
+
 import { SnackbarProvider } from 'components/Snackbar';
 
 const App: React.FC = () => {

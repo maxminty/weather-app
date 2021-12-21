@@ -37,7 +37,7 @@ const Widget: React.FC<WidgetProps> = ({ location }) => {
 
           setWeather(castedWeatherData);
 
-          dispatch(setShowWarmTheme(castedWeatherData.temp > edgeTemperature));
+          dispatch(setShowWarmTheme(castedWeatherData.temp >= edgeTemperature));
         }
       } catch (e) {
         enqueueSnackbar(

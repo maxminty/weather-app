@@ -9,7 +9,6 @@ import {
 } from 'store/slices/theme/themeSlice';
 
 import DashboardScreen from 'screens/Dashboard';
-import DashboardAlternative from 'screens/DashboardAlternative';
 
 import { deepOrange } from '@mui/material/colors';
 import {
@@ -34,10 +33,10 @@ const AppRoutes: React.FC = () => {
     const homeLocation = localStorage.getItem('weather-home');
 
     const switchTemperature = localStorage.getItem('weather-switch-theme');
+    console.log(homeLocation);
+    dispatch(setHomeLocation(homeLocation || ''));
 
-    dispatch(setHomeLocation(homeLocation));
-
-    dispatch(setThemeTemperature(switchTemperature));
+    dispatch(setThemeTemperature(switchTemperature || '0'));
   }, [dispatch]);
 
   const showWarmTheme = useAppSelector(selectShowWarmTheme);
@@ -47,8 +46,6 @@ const AppRoutes: React.FC = () => {
       <ThemeProvider theme={showWarmTheme ? warmTheme : coldTheme}>
         <Routes>
           <Route path="/" element={<DashboardScreen />} />
-
-          <Route path="/alt" element={<DashboardAlternative />} />
         </Routes>
       </ThemeProvider>
     </StyledEngineProvider>

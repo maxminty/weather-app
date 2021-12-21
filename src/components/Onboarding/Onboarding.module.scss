@@ -1,0 +1,18 @@
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.search {
+  width: 400px;
+}
+
+.save {
+  margin-left: 12px;
+  height: 56px;
+  width: 150px;
+}

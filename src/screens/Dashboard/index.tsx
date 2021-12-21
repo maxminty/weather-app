@@ -21,6 +21,7 @@ import { selectHomeLocation } from 'store/slices/location/locationSlice';
 
 import SettingsDrawer from 'components/SettingsDrawer';
 import HomeWidget from 'components/HomeWidget';
+import Onboarding from 'components/Onboarding';
 import Forecast from 'components/Forecast';
 
 import styles from './Dashboard.module.scss';
@@ -38,7 +39,7 @@ const DashboardContent: React.FC = () => {
     setLocationProps(searchLocation);
   };
 
-  const isLocationKnown = location.trim() !== '';
+  const isLocationKnown = location && location !== '';
 
   return (
     <>
@@ -91,76 +92,9 @@ const DashboardContent: React.FC = () => {
 
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Typography variant="h4">Hi there!</Typography>
-
-                  <Typography variant="body1" className={styles.subtitle}>
-                    {!isLocationKnown ? (
-                      <>
-                        Please, setup your <b>home location</b>
-                      </>
-                    ) : (
-                      <>
-                        How it&apos;s going in <b>{location}</b>?
-                      </>
-                    )}
-                  </Typography>
-                </Paper>
-              </Grid>
-
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <HomeWidget location={location} />
-                </Paper>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2 }}>
-                  <form onSubmit={handleOnSubmit} className={styles.searchForm}>
-                    <TextField
-                      label="Search for a city"
-                      placeholder="City name"
-                      value={searchLocation}
-                      fullWidth
-                      onChange={(e) => setSearchLocation(e.target.value)}
-                    />
-
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className={styles.submit}
-                      onClick={handleOnSubmit}
-                    >
-                      Search
-                    </Button>
-                  </form>
-                </Paper>
-              </Grid>
-
-              {locationProps.trim() !== '' && (
+              {isLocationKnown ? (
                 <>
-                  <Grid item xs={9}>
-                    <Paper sx={{ p: 2, height: 240 }}>
-                      <Forecast location={locationProps} />
-                    </Paper>
-                  </Grid>
-
-                  <Grid item xs={3}>
+                  <Grid item xs={12} md={8} lg={isLocationKnown ? 9 : 12}>
                     <Paper
                       sx={{
                         p: 2,
@@ -169,10 +103,77 @@ const DashboardContent: React.FC = () => {
                         height: 240,
                       }}
                     >
-                      <HomeWidget location={locationProps} />
+                      <Typography variant="h4">Hi there!</Typography>
+
+                      <Typography variant="body1" className={styles.subtitle}>
+                        How it&apos;s going in <b>{location}</b>?
+                      </Typography>
                     </Paper>
                   </Grid>
+                  <Grid item xs={12} md={4} lg={3}>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: 240,
+                      }}
+                    >
+                      <HomeWidget location={location} />
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 2 }}>
+                      <form
+                        onSubmit={handleOnSubmit}
+                        className={styles.searchForm}
+                      >
+                        <TextField
+                          label="Search for a city"
+                          placeholder="City name"
+                          value={searchLocation}
+                          fullWidth
+                          onChange={(e) => setSearchLocation(e.target.value)}
+                        />
+
+                        <Button
+                          variant="contained"
+                          type="submit"
+                          className={styles.submit}
+                          onClick={handleOnSubmit}
+                        >
+                          Search
+                        </Button>
+                      </form>
+                    </Paper>
+                  </Grid>
+
+                  {locationProps.trim() !== '' && (
+                    <>
+                      <Grid item xs={9}>
+                        <Paper sx={{ p: 2, height: 240 }}>
+                          <Forecast location={locationProps} />
+                        </Paper>
+                      </Grid>
+
+                      <Grid item xs={3}>
+                        <Paper
+                          sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: 240,
+                          }}
+                        >
+                          <HomeWidget location={locationProps} />
+                        </Paper>
+                      </Grid>
+                    </>
+                  )}
                 </>
+              ) : (
+                <Onboarding />
               )}
             </Grid>
           </Container>
