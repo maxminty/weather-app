@@ -1,0 +1,21 @@
+.root {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 320px;
+  padding: 12px;
+  background: var(--color-white);
+}
+
+.title {
+  margin-top: 30px;
+}
+
+.input {
+  margin-top: 12px;
+}
+
+.submit {
+  margin-top: 20px;
+}

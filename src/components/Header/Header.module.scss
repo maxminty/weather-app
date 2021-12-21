@@ -1,0 +1,10 @@
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  background: var(--color-white);
+  box-shadow: 0 6px 16px rgba(8, 5, 0, 0.1);
+}
