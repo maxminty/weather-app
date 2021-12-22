@@ -9,17 +9,11 @@ import { castWeatherResponseToType } from 'utils';
 
 import { getCurrentWeatherDaysByLocationNameRequest } from 'api/weather';
 
-import { useSnackbar } from 'components/Snackbar';
-
 import styles from './Forecast.module.scss';
-
-// const titles = ['1h', '3h', '1d', '2d', '3d', '4d', '5d'];
 
 type Cell = WeatherCell & { time: string };
 
 const Forecast: React.FC<ForecastProps> = ({ location }) => {
-  const { enqueueSnackbar } = useSnackbar();
-
   const [forecast, setForecast] = useState<Cell[]>([]);
 
   useEffect(() => {
@@ -38,16 +32,13 @@ const Forecast: React.FC<ForecastProps> = ({ location }) => {
           );
         }
       } catch (e) {
-        enqueueSnackbar(
-          `Something went wrong while fetch weather data for ${location}`,
-          {
-            variant: 'error',
-          },
-        );
+        console.log(e);
+
+        setForecast([]);
       }
     };
     getWeatherData();
-  }, [enqueueSnackbar, location]);
+  }, [location]);
 
   return (
     <aside className={styles.root}>
@@ -56,8 +47,8 @@ const Forecast: React.FC<ForecastProps> = ({ location }) => {
       </Typography>
 
       <div className={styles.list}>
-        {forecast.map((weather) => (
-          <div className={styles.listItem}>
+        {forecast.map((weather, i) => (
+          <div className={styles.listItem} key={`forecast-cell-${i + 1}`}>
             <div className={styles.row}>
               <Typography
                 variant="body1"

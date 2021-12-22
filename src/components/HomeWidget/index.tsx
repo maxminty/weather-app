@@ -46,6 +46,8 @@ const Widget: React.FC<WidgetProps> = ({ location }) => {
             variant: 'error',
           },
         );
+
+        setWeather(null);
       }
     };
     getWeatherData();

@@ -16,6 +16,8 @@ import {
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
+import { isCityNameValid } from 'utils';
+
 import { useAppSelector } from 'store/hooks';
 import { selectHomeLocation } from 'store/slices/location/locationSlice';
 
@@ -33,6 +35,12 @@ const DashboardContent: React.FC = () => {
   const [searchLocation, setSearchLocation] = useState('');
   const [locationProps, setLocationProps] = useState(location);
 
+  const handleSearchChange = (value) => {
+    if (isCityNameValid(value)) {
+      setSearchLocation(value);
+    }
+  };
+
   const handleOnSubmit = (e) => {
     e.preventDefault();
 
@@ -45,8 +53,8 @@ const DashboardContent: React.FC = () => {
     <>
       <Drawer
         anchor="right"
-        open={showDrawer}
-        onClose={() => setShowDrawer(false)}
+        open={showDrawer || (!isLocationKnown && showDrawer)}
+        onClose={() => setShowDrawer(!isLocationKnown)}
       >
         <SettingsDrawer />
       </Drawer>
@@ -123,7 +131,7 @@ const DashboardContent: React.FC = () => {
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item xs={9}>
                     <Paper sx={{ p: 2 }}>
                       <form
                         onSubmit={handleOnSubmit}
@@ -134,7 +142,7 @@ const DashboardContent: React.FC = () => {
                           placeholder="City name"
                           value={searchLocation}
                           fullWidth
-                          onChange={(e) => setSearchLocation(e.target.value)}
+                          onChange={(e) => handleSearchChange(e.target.value)}
                         />
 
                         <Button
@@ -173,7 +181,7 @@ const DashboardContent: React.FC = () => {
                   )}
                 </>
               ) : (
-                <Onboarding />
+                <Onboarding callback={() => setShowDrawer(true)} />
               )}
             </Grid>
           </Container>

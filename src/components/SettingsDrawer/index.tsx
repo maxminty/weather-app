@@ -7,19 +7,26 @@ import {
   Typography,
 } from '@mui/material';
 
+import { isCityNameValid } from 'utils';
+
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import {
   selectHomeLocation,
   setHomeLocation,
 } from 'store/slices/location/locationSlice';
-
 import {
   selectThemeTemperature,
   setThemeTemperature,
 } from 'store/slices/theme/themeSlice';
+
+import { useSnackbar } from 'components/Snackbar';
+
 import styles from './SettingsDrawer.module.scss';
+import { getCurrentWeatherDaysByLocationNameRequest } from '../../api/weather';
 
 const SettingsDrawer: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const dispatch = useAppDispatch();
   const homeLocation = useAppSelector(selectHomeLocation);
   const switchThemeTemperature = useAppSelector(selectThemeTemperature);
@@ -29,14 +36,37 @@ const SettingsDrawer: React.FC = () => {
     switchThemeTemperature.toString(),
   );
 
-  const handleSaveSettings = () => {
-    dispatch(setHomeLocation(location));
+  const handleSaveSettings = async () => {
+    if (location.trim() === '') {
+      return enqueueSnackbar(`Please, add a home location`, {
+        variant: 'error',
+      });
+    }
 
-    dispatch(setThemeTemperature(switchTemperature));
+    try {
+      await getCurrentWeatherDaysByLocationNameRequest(location);
+
+      dispatch(setHomeLocation(location));
+
+      dispatch(setThemeTemperature(switchTemperature));
+    } catch (e) {
+      console.log(e);
+
+      enqueueSnackbar(
+        `Something went wrong while fetch weather data for ${location}`,
+        {
+          variant: 'error',
+        },
+      );
+    }
+    return null;
   };
 
-  const handleLocationChange = (locationSearch: string): void =>
-    setLocation(locationSearch);
+  const handleLocationChange = (locationSearch: string): void => {
+    if (isCityNameValid(locationSearch)) {
+      setLocation(locationSearch);
+    }
+  };
 
   const handleTemperatureChange = (temperatureAmount: string): void =>
     setSwitchTemperature(temperatureAmount);

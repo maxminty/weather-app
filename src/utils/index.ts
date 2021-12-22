@@ -11,3 +11,9 @@ export const castWeatherResponseToType = (
     temp_min: Math.round(response.main.temp_min),
   };
 };
+
+const CITY_NAME_REGEXP =
+  /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+
+export const isCityNameValid = (name: string): boolean =>
+  CITY_NAME_REGEXP.test(name);
