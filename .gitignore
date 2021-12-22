@@ -20,6 +20,9 @@ js/**/*.js.map
 /.pnp
 .pnp.js
 
+.env
+.env.*
+
 # testing
 /coverage
 
