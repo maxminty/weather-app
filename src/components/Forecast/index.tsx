@@ -11,7 +11,7 @@ import { getCurrentWeatherDaysByLocationNameRequest } from 'api/weather';
 
 import styles from './Forecast.module.scss';
 
-type Cell = WeatherCell & { time: string };
+type Cell = WeatherCell & { time: string; timeFormat: string };
 
 const Forecast: React.FC<ForecastProps> = ({ location }) => {
   const [forecast, setForecast] = useState<Cell[]>([]);
@@ -24,11 +24,16 @@ const Forecast: React.FC<ForecastProps> = ({ location }) => {
             location,
           );
 
+          const activeForecastCells = [0, 1, 8, 16, 24, 32, 40, 48, 56];
+
           setForecast(
-            response.data.list.map((item) => ({
-              ...castWeatherResponseToType(item),
-              time: item.dt_txt,
-            })),
+            response.data.list
+              .filter((_, index) => activeForecastCells.includes(index))
+              .map((item, index) => ({
+                ...castWeatherResponseToType(item),
+                time: item.dt_txt,
+                timeFormat: [0, 1].includes(index) ? 'HH:00' : 'DD/MM',
+              })),
           );
         }
       } catch (e) {
@@ -54,7 +59,7 @@ const Forecast: React.FC<ForecastProps> = ({ location }) => {
                 variant="body1"
                 className={cx(styles.temperature, styles.amount)}
               >
-                {weather ? dayjs(weather.time).format('HH:MM DD/MM') : '-'}
+                {weather ? dayjs(weather.time).format(weather.timeFormat) : '-'}
               </Typography>
             </div>
 

@@ -98,17 +98,16 @@ const DashboardContent: React.FC = () => {
         >
           <Toolbar />
 
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {isLocationKnown ? (
                 <>
-                  <Grid item xs={12} md={8} lg={isLocationKnown ? 9 : 12}>
+                  <Grid item xs={12} md={9} lg={9}>
                     <Paper
                       sx={{
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 240,
                       }}
                     >
                       <Typography variant="h4">Hi there!</Typography>
@@ -118,7 +117,14 @@ const DashboardContent: React.FC = () => {
                       </Typography>
                     </Paper>
                   </Grid>
-                  <Grid item xs={12} md={4} lg={3}>
+
+                  <Grid item xs={12} md={9}>
+                    <Paper sx={{ p: 2, height: 240 }}>
+                      <Forecast location={location} />
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12} md={3} lg={3}>
                     <Paper
                       sx={{
                         p: 2,
@@ -131,7 +137,7 @@ const DashboardContent: React.FC = () => {
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={9}>
+                  <Grid item xs={12} md={9}>
                     <Paper sx={{ p: 2 }}>
                       <form
                         onSubmit={handleOnSubmit}
@@ -159,13 +165,13 @@ const DashboardContent: React.FC = () => {
 
                   {locationProps.trim() !== '' && (
                     <>
-                      <Grid item xs={9}>
+                      <Grid item xs={12} md={9}>
                         <Paper sx={{ p: 2, height: 240 }}>
                           <Forecast location={locationProps} />
                         </Paper>
                       </Grid>
 
-                      <Grid item xs={3}>
+                      <Grid item xs={12} md={3}>
                         <Paper
                           sx={{
                             p: 2,
